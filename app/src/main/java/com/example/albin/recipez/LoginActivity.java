@@ -53,58 +53,65 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String tempUser = username.getText().toString();
+                String tempPass = password.getText().toString();
 
-                request = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
+                if (tempUser.matches("") || tempPass.matches("")) {
+                    System.out.println("Fields are empty fill em!");
+                } else {
 
-                        try {
+                    request = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
 
-                            System.out.println("test " + response);
-                            JSONObject jsonObject = new JSONObject(response);
-                            System.out.println(jsonObject.names().get(0) + "    asdsa");
-                            if(jsonObject.names().get(0).equals("success")) {
-                                startActivity(new Intent(getApplicationContext(), ShuffleRecipeActivity.class));
-                            } else if (jsonObject.names().get(0).equals("failure")) {
-                                System.out.println("FEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEL");
+                            try {
+
+                                System.out.println("test " + response);
+                                JSONObject jsonObject = new JSONObject(response);
+                                System.out.println(jsonObject.names().get(0) + "    asdsa");
+                                if (jsonObject.names().get(0).equals("success")) {
+                                    startActivity(new Intent(getApplicationContext(), ShuffleRecipeActivity.class));
+                                } else if (jsonObject.names().get(0).equals("failure")) {
+                                    System.out.println("FEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEL");
+                                }
+
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
                             }
 
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
+
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            System.out.println("hej");
+                        }
+                    }) {
+
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            System.out.println("try1");
+                            HashMap<String, String> hashMap = new HashMap<String, String>();
+                            String tmpusr = "";
+                            String tmppass = "";
+                            if (username.getText().toString() != null) {
+                                tmpusr = username.getText().toString();
+                            }
+                            if (password.getText().toString() != null) {
+                                tmppass = password.getText().toString();
+                            }
+
+                            hashMap.put("username", tmpusr);
+                            hashMap.put("password", tmppass);
+                            System.out.println("try2");
+                            return hashMap;
                         }
 
+                    };
+                    System.out.println("sending request");
+                    requestQueue.add(request);
 
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        System.out.println("hej");
-                    }
-                }){
-
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        System.out.println("try1");
-                        HashMap<String, String> hashMap = new HashMap<String, String>();
-                        String tmpusr = "";
-                        String tmppass = "";
-                        if (username.getText().toString() != null) {
-                            tmpusr = username.getText().toString();
-                        }
-                        if (password.getText().toString() != null) {
-                           tmppass = password.getText().toString();
-                        }
-
-                        hashMap.put("username", tmpusr);
-                        hashMap.put("password", tmppass);
-                        System.out.println("try2");
-                        return hashMap;
-                    }
-
-                };
-                System.out.println("sending request");
-                requestQueue.add(request);
-
+                }
             }
         });
 
