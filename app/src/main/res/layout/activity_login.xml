@@ -66,7 +66,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Create"
-        android:id="@+id/button2"
+        android:id="@+id/createUserButton"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
         android:backgroundTint="@color/colorAccent"

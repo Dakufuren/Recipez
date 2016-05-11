@@ -26,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText username;
     private EditText password;
     private Button login;
+    private Button createUser;
     private RequestQueue requestQueue;
     private static String URL = "http://wolfcrew.se/scripts/login_control.php";
     private StringRequest request;
@@ -38,8 +39,16 @@ public class LoginActivity extends AppCompatActivity {
         username = (EditText) findViewById(R.id.usernameField);
         password = (EditText) findViewById(R.id.passwordField);
         login = (Button) findViewById(R.id.loginButton);
+        createUser = (Button) findViewById(R.id.createUserButton);
 
         requestQueue = Volley.newRequestQueue(this);
+
+        createUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), CreateAccountActivity.class));
+            }
+        });
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
