@@ -52,7 +52,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                     public void onResponse(String response) {
 
                         try {
-
+                            System.out.println("tjo   " + response);
                             JSONObject jsonObject = new JSONObject(response);
                             System.out.println(jsonObject.names().get(0) + "    asdsa");
 
