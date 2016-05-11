@@ -46,59 +46,66 @@ public class CreateAccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                String tempUser = username.getText().toString();
+                String tempPass = password.getText().toString();
+                String tempEmail = email.getText().toString();
 
-                request = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
+                if (tempUser.matches("") || tempPass.matches("") || tempEmail.matches("")) {
+                    System.out.println("Fields are empty fill em!");
+                } else {
 
-                        try {
-                            System.out.println("tjo   " + response);
-                            JSONObject jsonObject = new JSONObject(response);
-                            System.out.println(jsonObject.names().get(0) + "    asdsa");
+                    request = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
 
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
+                            try {
+                                System.out.println("tjo   " + response);
+                                JSONObject jsonObject = new JSONObject(response);
+                                System.out.println(jsonObject.names().get(0) + "    asdsa");
+
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
+
+
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            System.out.println("hej");
+                        }
+                    }) {
+
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            System.out.println("try1");
+                            HashMap<String, String> hashMap = new HashMap<String, String>();
+                            String tmpusr = "";
+                            String tmppass = "";
+                            String tmpemail = "";
+                            if (username.getText().toString() != null) {
+                                tmpusr = username.getText().toString();
+                            }
+                            if (password.getText().toString() != null) {
+                                tmppass = password.getText().toString();
+                            }
+                            if (email.getText().toString() != null) {
+                                tmpemail = email.getText().toString();
+                            }
+
+                            hashMap.put("username", tmpusr);
+                            hashMap.put("password", tmppass);
+                            hashMap.put("email", tmpemail);
+                            System.out.println("try2");
+                            return hashMap;
                         }
 
+                    };
+                    System.out.println("sending request");
+                    requestQueue.add(request);
 
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        System.out.println("hej");
-                    }
-                }){
-
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        System.out.println("try1");
-                        HashMap<String, String> hashMap = new HashMap<String, String>();
-                        String tmpusr = "";
-                        String tmppass = "";
-                        String tmpemail = "";
-                        if (username.getText().toString() != null) {
-                            tmpusr = username.getText().toString();
-                        }
-                        if (password.getText().toString() != null) {
-                            tmppass = password.getText().toString();
-                        }
-                        if (email.getText().toString() != null) {
-                            tmpemail = email.getText().toString();
-                        }
-
-                        hashMap.put("username", tmpusr);
-                        hashMap.put("password", tmppass);
-                        hashMap.put("email", tmpemail);
-                        System.out.println("try2");
-                        return hashMap;
-                    }
-
-                };
-                System.out.println("sending request");
-                requestQueue.add(request);
-
+                }
             }
-
 
 
         });
