@@ -18,11 +18,19 @@ public class SwipeAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         Fragment fragment = new SearchMenueFragment();
+        Fragment fragment2 = new FavoritesFramgent();
         Bundle bundle = new Bundle();
         bundle.putInt("count", position+1);
         fragment.setArguments(bundle);
 
-        return fragment;
+
+        if (position == 0) {
+            return fragment;
+        } else if (position == 1) {
+            return fragment2;
+        } else {
+            return fragment;
+        }
     }
 
     @Override
