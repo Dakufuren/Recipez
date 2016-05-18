@@ -29,7 +29,7 @@ public class SwipeAdapter extends FragmentPagerAdapter {
         } else if (position == 1) {
             return fragment2;
         } else {
-            return fragment;
+            return null;
         }
     }
 
