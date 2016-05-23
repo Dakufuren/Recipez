@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Vegetarian"
-        android:id="@+id/veggieBox"
+        android:id="@+id/vegetarianBox"
         android:checked="false"
         android:layout_marginLeft="48dp"
         android:layout_alignParentTop="true"
@@ -33,16 +33,16 @@
         android:text="Glutenfree"
         android:id="@+id/glutenBox"
         android:checked="false"
-        android:layout_below="@+id/veggieBox"
-        android:layout_alignLeft="@+id/veggieBox"
-        android:layout_alignStart="@+id/veggieBox"
+        android:layout_below="@+id/vegetarianBox"
+        android:layout_alignLeft="@+id/vegetarianBox"
+        android:layout_alignStart="@+id/vegetarianBox"
         android:layout_marginTop="15dp" />
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Vegan"
-        android:id="@+id/checkBox"
+        android:id="@+id/veganBox"
         android:checked="false"
         android:layout_marginRight="70dp"
         android:layout_marginEnd="71dp"
@@ -57,13 +57,13 @@
         android:id="@+id/lactoseBox"
         android:checked="false"
         android:layout_alignTop="@+id/glutenBox"
-        android:layout_alignLeft="@+id/checkBox"
-        android:layout_alignStart="@+id/checkBox" />
+        android:layout_alignLeft="@+id/veganBox"
+        android:layout_alignStart="@+id/veganBox" />
 
     <Spinner
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/spinner"
+        android:id="@+id/dropDownOne"
         android:layout_below="@+id/glutenBox"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
@@ -71,20 +71,10 @@
         android:background="@drawable/barstyle"/>
 
     <Spinner
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/spinner2"
-        android:layout_below="@+id/spinner"
-        android:layout_centerHorizontal="true"
-        android:spinnerMode="dropdown"
-        android:background="@drawable/barstyle"
-        android:layout_marginTop="15dp" />
-
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinner3"
-        android:layout_below="@+id/spinner2"
+        android:id="@+id/dropDownTwo"
+        android:layout_below="@+id/dropDownOne"
         android:layout_centerHorizontal="true"
         android:spinnerMode="dropdown"
         android:background="@drawable/barstyle"
@@ -94,11 +84,29 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:text="Shuffle"
-        android:id="@+id/button3"
+        android:id="@+id/ShuffleButton"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:backgroundTint="@color/colorAccent"
         android:textColor="#FFFFFF"
         android:textSize="18pt"
         android:textStyle="bold" />
+
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/priceBar"
+        android:layout_below="@+id/dropDownTwo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="49dp"
+        android:indeterminate="false" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/priceDisplay"
+        android:layout_below="@+id/priceBar"
+        android:layout_alignRight="@+id/lactoseBox"
+        android:layout_alignEnd="@+id/lactoseBox" />
 </RelativeLayout>
