@@ -109,4 +109,15 @@
         android:layout_below="@+id/priceBar"
         android:layout_alignRight="@+id/lactoseBox"
         android:layout_alignEnd="@+id/lactoseBox" />
+
+    <com.wenchao.cardstack.CardStack
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding = "20dp"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:layout_above="@+id/ShuffleButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

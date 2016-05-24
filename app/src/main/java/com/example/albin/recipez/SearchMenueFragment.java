@@ -21,6 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.wenchao.cardstack.CardStack;
 
 import org.json.JSONObject;
 
@@ -51,6 +52,9 @@ public class SearchMenueFragment extends android.support.v4.app.Fragment {
     private StringRequest request;
     private static String URL = "http://wolfcrew.se/scripts/get_recipe.php";
 
+    private CardStack mCardStack;
+    private CardsDataAdapter mCardAdapter;
+
 
     ArrayAdapter<String> adapterContentOneType;
     ArrayAdapter<String> adapterContentTwoType;
@@ -66,6 +70,12 @@ public class SearchMenueFragment extends android.support.v4.app.Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search_menue_layout,container,false);
         Bundle bundle = getArguments();
+
+        mCardStack = (CardStack)view.findViewById(R.id.container);
+        mCardStack.setContentResource(R.layout.card_stack);
+        mCardStack.setStackMargin(10);
+
+        mCardAdapter = new CardsDataAdapter(this.getActivity(),0);
 
         vegetarian = (CheckBox) view.findViewById(R.id.vegetarianBox);
         vegan = (CheckBox) view.findViewById(R.id.veganBox);
@@ -172,6 +182,14 @@ public class SearchMenueFragment extends android.support.v4.app.Fragment {
                     }
 
                 };
+
+                mCardAdapter.add("test1");
+                mCardAdapter.add("test2");
+                mCardAdapter.add("test3");
+                mCardAdapter.add("test4");
+                mCardAdapter.add("test5");
+
+                mCardStack.setAdapter(mCardAdapter);
                 System.out.println("sending request");
                 requestQueue.add(request);
 
@@ -187,5 +205,7 @@ public class SearchMenueFragment extends android.support.v4.app.Fragment {
 
         return view;
     }
+
+
 
 }
