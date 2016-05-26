@@ -76,6 +76,8 @@ public class SearchMenueFragment extends android.support.v4.app.Fragment {
         mCardStack.setContentResource(R.layout.card_stack);
         mCardStack.setStackMargin(10);
 
+
+
         mCardAdapter = new CardsDataAdapter(this.getActivity(),0);
 
         vegetarian = (CheckBox) view.findViewById(R.id.vegetarianBox);
@@ -189,7 +191,6 @@ public class SearchMenueFragment extends android.support.v4.app.Fragment {
                     }
 
                 };
-
                 mCardAdapter.add("test1");
                 mCardAdapter.add("test2");
                 mCardAdapter.add("test3");
