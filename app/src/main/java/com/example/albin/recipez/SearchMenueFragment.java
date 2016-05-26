@@ -74,8 +74,8 @@ public class SearchMenueFragment extends android.support.v4.app.Fragment {
 
         mCardStack = (CardStack)view.findViewById(R.id.container);
         mCardStack.setContentResource(R.layout.card_stack);
-        mCardStack.setStackMargin(10);
-
+        mCardStack.setStackMargin(20);
+        mCardStack.setVisibility(View.GONE);
 
 
         mCardAdapter = new CardsDataAdapter(this.getActivity(),0);
@@ -191,6 +191,7 @@ public class SearchMenueFragment extends android.support.v4.app.Fragment {
                     }
 
                 };
+                mCardStack.setVisibility(View.VISIBLE);
                 mCardAdapter.add("test1");
                 mCardAdapter.add("test2");
                 mCardAdapter.add("test3");
