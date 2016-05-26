@@ -39,6 +39,7 @@ public class SearchMenueFragment extends android.support.v4.app.Fragment {
     private CheckBox vegan;
     private CheckBox glutenFree;
     private CheckBox laktos;
+    private CheckBox meat;
     private Button shuffle;
     private Spinner dropDown1;
     private Spinner dropDown2;
@@ -81,6 +82,7 @@ public class SearchMenueFragment extends android.support.v4.app.Fragment {
         vegan = (CheckBox) view.findViewById(R.id.veganBox);
         glutenFree = (CheckBox) view.findViewById(R.id.glutenBox);
         laktos = (CheckBox) view.findViewById(R.id.lactoseBox);
+        meat = (CheckBox) view.findViewById(R.id.meatBox);
         dropDown1 = (Spinner) view.findViewById(R.id.dropDownOne);
         dropDown2 = (Spinner) view.findViewById(R.id.dropDownTwo);
         shuffle = (Button) view.findViewById(R.id.ShuffleButton);
@@ -158,6 +160,7 @@ public class SearchMenueFragment extends android.support.v4.app.Fragment {
                         String vegetarianId ="0";
                         String veganId = "0";
                         String lactoseId = "0";
+                        String meatId = "0";
                         if (glutenFree.isChecked()) {
                             glutenFreeId = "1";
                         } if (vegetarian.isChecked()) {
@@ -167,6 +170,9 @@ public class SearchMenueFragment extends android.support.v4.app.Fragment {
                         } if (laktos.isChecked()) {
                             lactoseId = "4";
                         }
+                        if(meat.isChecked()){
+                            meatId = "5";
+                        }
 
                         hashMap.put("categoryone", categoryOne);
                         hashMap.put("categorytwo", categoryTwo);
@@ -175,8 +181,9 @@ public class SearchMenueFragment extends android.support.v4.app.Fragment {
                         hashMap.put("vegetarian", vegetarianId);
                         hashMap.put("vegan", veganId);
                         hashMap.put("lactosefree", lactoseId);
+                        hashMap.put("meat", meatId);
                         System.out.println(" cat one " + categoryOne + " cat two  " + categoryTwo + " price string  " + priceString + " gluten  " + glutenFreeId + "  vegetarian  " + vegetarianId
-                         + "  vegan  " + veganId + "  lactose  " + lactoseId);
+                         + "  vegan  " + veganId + "  lactose  " + lactoseId + " meat " + meatId);
 
                         return hashMap;
                     }
