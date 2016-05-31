@@ -19,10 +19,12 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.wenchao.cardstack.CardStack;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -45,12 +47,13 @@ public class SearchMenueFragment extends android.support.v4.app.Fragment {
     private Spinner dropDown2;
     private SeekBar priceBar;
     private TextView priceDisplay;
-    private String contentOne[] = {"", "Beef", "Pork", "Chicken", "Minced meat"};
-    private String contentTwo[] = {"", "Pasta", "Rice", "Noodles", "Bulgur", "Potatoes", "Couscous", "Lentils"};
+    private String contentOne[] = {"", "Beef", "Pork", "Chicken", "Minced meat", "Oumph"};
+    private String contentTwo[] = {"", "Pasta", "Rice", "Noodles", "Bulgur", "Potatis", "Couscous", "Lentils"};
     private int price = 0;
+    HashMap<String, String> params = new HashMap<String, String>();
 
     private RequestQueue requestQueue;
-    private StringRequest request;
+    private JsonObjectRequest request;
     private static String URL = "http://wolfcrew.se/scripts/get_recipe.php";
 
     private CardStack mCardStack;
@@ -71,6 +74,7 @@ public class SearchMenueFragment extends android.support.v4.app.Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search_menue_layout,container,false);
         Bundle bundle = getArguments();
+
 
         mCardStack = (CardStack)view.findViewById(R.id.container);
         mCardStack.setContentResource(R.layout.card_stack);
@@ -127,12 +131,91 @@ public class SearchMenueFragment extends android.support.v4.app.Fragment {
             public void onClick(View v) {
 
 
+                CustomRequest jsonObjRequest = new CustomRequest(Request.Method.POST, URL, params, new Response.Listener<JSONObject>() {
 
-
-                request = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                     @Override
-                    public void onResponse(String response) {
+                    public void onResponse(JSONObject response) {
+
                         try {
+                            JSONArray jsonArray = response.getJSONArray("json");
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            String test = jsonObject.getString("recipeName");
+                            System.out.println(test);
+
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        System.out.println("hej");
+                    }
+                }) {
+
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+
+
+                        String categoryOne = dropDown1.getSelectedItem().toString();
+                        String categoryTwo = dropDown2.getSelectedItem().toString();
+                        String priceString = Integer.toString(price);
+                        String glutenFreeId = "0";
+                        String vegetarianId ="0";
+                        String veganId = "0";
+                        String lactoseId = "0";
+                        String meatId = "0";
+                        if (glutenFree.isChecked()) {
+                            glutenFreeId = "1";
+                        } if (vegetarian.isChecked()) {
+                            vegetarianId = "2";
+                        } if (vegan.isChecked()) {
+                            veganId = "3";
+                        } if (laktos.isChecked()) {
+                            lactoseId = "4";
+                        }
+                        if(meat.isChecked()){
+                            meatId = "5";
+                        }
+
+                        params.put("categoryone", categoryOne);
+                        params.put("categorytwo", categoryTwo);
+                        params.put("price", priceString);
+                        params.put("glutenfree", glutenFreeId);
+                        params.put("vegetarian", vegetarianId);
+                        params.put("vegan", veganId);
+                        params.put("lactosefree", lactoseId);
+                        //hashMap.put("meat", meatId);
+                        System.out.println(" cat one " + categoryOne + " cat two  " + categoryTwo + " price string  " + priceString + " gluten  " + glutenFreeId + "  vegetarian  " + vegetarianId
+                                + "  vegan  " + veganId + "  lactose  " + lactoseId + " meat " + meatId);
+
+
+                        return params;
+
+
+                    }
+
+                };
+
+
+
+
+
+                /*
+                request = new JsonObjectRequest(Request.Method.POST, URL, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+
+
+                        try {
+
+                            JSONArray jsonArray = response.getJSONArray("json");
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            String test = jsonObject.getString("recipeName");
+                            System.out.println(test);
+
+
 
 
 
@@ -154,7 +237,6 @@ public class SearchMenueFragment extends android.support.v4.app.Fragment {
                     protected Map<String, String> getParams() throws AuthFailureError {
 
                         HashMap<String, String> hashMap = new HashMap<String, String>();
-
                         String categoryOne = dropDown1.getSelectedItem().toString();
                         String categoryTwo = dropDown2.getSelectedItem().toString();
                         String priceString = Integer.toString(price);
@@ -183,14 +265,19 @@ public class SearchMenueFragment extends android.support.v4.app.Fragment {
                         hashMap.put("vegetarian", vegetarianId);
                         hashMap.put("vegan", veganId);
                         hashMap.put("lactosefree", lactoseId);
-                        hashMap.put("meat", meatId);
+                        //hashMap.put("meat", meatId);
                         System.out.println(" cat one " + categoryOne + " cat two  " + categoryTwo + " price string  " + priceString + " gluten  " + glutenFreeId + "  vegetarian  " + vegetarianId
-                         + "  vegan  " + veganId + "  lactose  " + lactoseId + " meat " + meatId);
+                                + "  vegan  " + veganId + "  lactose  " + lactoseId + " meat " + meatId);
+
 
                         return hashMap;
+
+
                     }
 
-                };
+                };*/
+
+
                 mCardStack.setVisibility(View.VISIBLE);
                 mCardAdapter.add("test1");
                 mCardAdapter.add("test2");
