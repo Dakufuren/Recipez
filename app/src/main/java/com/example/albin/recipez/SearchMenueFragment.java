@@ -27,6 +27,7 @@ import com.wenchao.cardstack.CardStack;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,7 +54,7 @@ public class SearchMenueFragment extends android.support.v4.app.Fragment {
 
 
     private RequestQueue requestQueue;
-    private JsonObjectRequest request;
+    private StringRequest request;
     private static String URL = "http://wolfcrew.se/scripts/get_recipe.php";
 
     private CardStack mCardStack;
@@ -100,7 +101,7 @@ public class SearchMenueFragment extends android.support.v4.app.Fragment {
         adapterContentTwoType = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, contentTwo);
         dropDown2.setAdapter((adapterContentTwoType));
 
-        final HashMap<String, String> params = new HashMap<String, String>();
+
 
         priceDisplay.setText("Price: " + priceBar.getProgress() + " sek");
 
@@ -133,57 +134,77 @@ public class SearchMenueFragment extends android.support.v4.app.Fragment {
             public void onClick(View v) {
 
 
-                CustomRequest jsonObjRequest = new CustomRequest(Request.Method.POST, URL, params, new Response.Listener<JSONObject>() {
-
+                request = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                     @Override
-                    public void onResponse(JSONObject response) {
+                    public void onResponse(String response) {
 
                         try {
 
-                            JSONObject jsonObject = response.getJSONObject("recipeName");
-                            String test = jsonObject.toString();
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonObject = (JSONObject) jsonArray.get(0);
+
+                            String test = jsonObject.getString("recipe_name");
+                            String test2 = jsonObject.getString("recipe_description");
+                            String test3 = jsonObject.getString("price");
                             System.out.println(test);
+                            System.out.println(test2);
+                            System.out.println(test3);
+
+
 
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
+
+
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        System.out.println(error);
+                        System.out.println("hej");
                     }
-                });
+                }) {
+
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+
+                        HashMap<String, String> hashMap = new HashMap<String, String>();
+
+                        String categoryOne = dropDown1.getSelectedItem().toString();
+                        String categoryTwo = dropDown2.getSelectedItem().toString();
+                        String priceString = Integer.toString(price);
+                        String glutenFreeId = "0";
+                        String vegetarianId ="0";
+                        String veganId = "0";
+                        String lactoseId = "0";
+                        String meatId = "0";
+                        if (glutenFree.isChecked()) {
+                            glutenFreeId = "1";
+                        } if (vegetarian.isChecked()) {
+                            vegetarianId = "2";
+                        } if (vegan.isChecked()) {
+                            veganId = "3";
+                        } if (laktos.isChecked()) {
+                            lactoseId = "4";
+                        }
+                        if(meat.isChecked()){
+                            meatId = "5";
+                        }
+
+                        hashMap.put("categoryone", categoryOne);
+                        hashMap.put("categorytwo", categoryTwo);
+                        hashMap.put("price", priceString);
+                        hashMap.put("glutenfree", glutenFreeId);
+                        hashMap.put("vegetarian", vegetarianId);
+                        hashMap.put("vegan", veganId);
+                        hashMap.put("lactosefree", lactoseId);
+                        return hashMap;
+                    }
+
+                };
 
 
-                String categoryOne = dropDown1.getSelectedItem().toString();
-                String categoryTwo = dropDown2.getSelectedItem().toString();
-                String priceString = Integer.toString(price);
-                String glutenFreeId = "0";
-                String vegetarianId ="0";
-                String veganId = "0";
-                String lactoseId = "0";
-                String meatId = "0";
-                if (glutenFree.isChecked()) {
-                    glutenFreeId = "1";
-                } if (vegetarian.isChecked()) {
-                    vegetarianId = "2";
-                } if (vegan.isChecked()) {
-                    veganId = "3";
-                } if (laktos.isChecked()) {
-                    lactoseId = "4";
-                }
-                if(meat.isChecked()){
-                    meatId = "5";
-                }
 
-                params.put("categoryone", categoryOne);
-                params.put("categorytwo", categoryTwo);
-                params.put("price", priceString);
-                params.put("glutenfree", glutenFreeId);
-                params.put("vegetarian", vegetarianId);
-                params.put("vegan", veganId);
-                params.put("lactosefree", lactoseId);
 
                 mCardStack.setVisibility(View.VISIBLE);
                 mCardAdapter.add("test1");
@@ -194,7 +215,7 @@ public class SearchMenueFragment extends android.support.v4.app.Fragment {
 
                 mCardStack.setAdapter(mCardAdapter);
                 System.out.println("sending request");
-                requestQueue.add(jsonObjRequest);
+                requestQueue.add(request);
 
 
 
