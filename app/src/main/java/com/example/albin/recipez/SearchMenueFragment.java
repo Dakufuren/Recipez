@@ -50,7 +50,7 @@ public class SearchMenueFragment extends android.support.v4.app.Fragment {
     private String contentOne[] = {"", "Beef", "Pork", "Chicken", "Minced meat", "Oumph"};
     private String contentTwo[] = {"", "Pasta", "Rice", "Noodles", "Bulgur", "Potatis", "Couscous", "Lentils"};
     private int price = 0;
-    HashMap<String, String> params = new HashMap<String, String>();
+
 
     private RequestQueue requestQueue;
     private JsonObjectRequest request;
@@ -72,7 +72,7 @@ public class SearchMenueFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_search_menue_layout,container,false);
+        final View view = inflater.inflate(R.layout.fragment_search_menue_layout,container,false);
         Bundle bundle = getArguments();
 
 
@@ -99,6 +99,8 @@ public class SearchMenueFragment extends android.support.v4.app.Fragment {
         dropDown1.setAdapter(adapterContentOneType);
         adapterContentTwoType = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, contentTwo);
         dropDown2.setAdapter((adapterContentTwoType));
+
+        final HashMap<String, String> params = new HashMap<String, String>();
 
         priceDisplay.setText("Price: " + priceBar.getProgress() + " sek");
 
@@ -137,9 +139,9 @@ public class SearchMenueFragment extends android.support.v4.app.Fragment {
                     public void onResponse(JSONObject response) {
 
                         try {
-                            JSONArray jsonArray = response.getJSONArray("json");
-                            JSONObject jsonObject = jsonArray.getJSONObject(0);
-                            String test = jsonObject.getString("recipeName");
+
+                            JSONObject jsonObject = response.getJSONObject("recipeName");
+                            String test = jsonObject.toString();
                             System.out.println(test);
 
                         } catch (Exception ex) {
@@ -149,134 +151,39 @@ public class SearchMenueFragment extends android.support.v4.app.Fragment {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        System.out.println("hej");
+                        System.out.println(error);
                     }
-                }) {
-
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
+                });
 
 
-                        String categoryOne = dropDown1.getSelectedItem().toString();
-                        String categoryTwo = dropDown2.getSelectedItem().toString();
-                        String priceString = Integer.toString(price);
-                        String glutenFreeId = "0";
-                        String vegetarianId ="0";
-                        String veganId = "0";
-                        String lactoseId = "0";
-                        String meatId = "0";
-                        if (glutenFree.isChecked()) {
-                            glutenFreeId = "1";
-                        } if (vegetarian.isChecked()) {
-                            vegetarianId = "2";
-                        } if (vegan.isChecked()) {
-                            veganId = "3";
-                        } if (laktos.isChecked()) {
-                            lactoseId = "4";
-                        }
-                        if(meat.isChecked()){
-                            meatId = "5";
-                        }
+                String categoryOne = dropDown1.getSelectedItem().toString();
+                String categoryTwo = dropDown2.getSelectedItem().toString();
+                String priceString = Integer.toString(price);
+                String glutenFreeId = "0";
+                String vegetarianId ="0";
+                String veganId = "0";
+                String lactoseId = "0";
+                String meatId = "0";
+                if (glutenFree.isChecked()) {
+                    glutenFreeId = "1";
+                } if (vegetarian.isChecked()) {
+                    vegetarianId = "2";
+                } if (vegan.isChecked()) {
+                    veganId = "3";
+                } if (laktos.isChecked()) {
+                    lactoseId = "4";
+                }
+                if(meat.isChecked()){
+                    meatId = "5";
+                }
 
-                        params.put("categoryone", categoryOne);
-                        params.put("categorytwo", categoryTwo);
-                        params.put("price", priceString);
-                        params.put("glutenfree", glutenFreeId);
-                        params.put("vegetarian", vegetarianId);
-                        params.put("vegan", veganId);
-                        params.put("lactosefree", lactoseId);
-                        //hashMap.put("meat", meatId);
-                        System.out.println(" cat one " + categoryOne + " cat two  " + categoryTwo + " price string  " + priceString + " gluten  " + glutenFreeId + "  vegetarian  " + vegetarianId
-                                + "  vegan  " + veganId + "  lactose  " + lactoseId + " meat " + meatId);
-
-
-                        return params;
-
-
-                    }
-
-                };
-
-
-
-
-
-                /*
-                request = new JsonObjectRequest(Request.Method.POST, URL, null, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-
-
-
-                        try {
-
-                            JSONArray jsonArray = response.getJSONArray("json");
-                            JSONObject jsonObject = jsonArray.getJSONObject(0);
-                            String test = jsonObject.getString("recipeName");
-                            System.out.println(test);
-
-
-
-
-
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
-                        }
-
-
-
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        System.out.println("hej");
-                    }
-                }) {
-
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-
-                        HashMap<String, String> hashMap = new HashMap<String, String>();
-                        String categoryOne = dropDown1.getSelectedItem().toString();
-                        String categoryTwo = dropDown2.getSelectedItem().toString();
-                        String priceString = Integer.toString(price);
-                        String glutenFreeId = "0";
-                        String vegetarianId ="0";
-                        String veganId = "0";
-                        String lactoseId = "0";
-                        String meatId = "0";
-                        if (glutenFree.isChecked()) {
-                            glutenFreeId = "1";
-                        } if (vegetarian.isChecked()) {
-                            vegetarianId = "2";
-                        } if (vegan.isChecked()) {
-                            veganId = "3";
-                        } if (laktos.isChecked()) {
-                            lactoseId = "4";
-                        }
-                        if(meat.isChecked()){
-                            meatId = "5";
-                        }
-
-                        hashMap.put("categoryone", categoryOne);
-                        hashMap.put("categorytwo", categoryTwo);
-                        hashMap.put("price", priceString);
-                        hashMap.put("glutenfree", glutenFreeId);
-                        hashMap.put("vegetarian", vegetarianId);
-                        hashMap.put("vegan", veganId);
-                        hashMap.put("lactosefree", lactoseId);
-                        //hashMap.put("meat", meatId);
-                        System.out.println(" cat one " + categoryOne + " cat two  " + categoryTwo + " price string  " + priceString + " gluten  " + glutenFreeId + "  vegetarian  " + vegetarianId
-                                + "  vegan  " + veganId + "  lactose  " + lactoseId + " meat " + meatId);
-
-
-                        return hashMap;
-
-
-                    }
-
-                };*/
-
+                params.put("categoryone", categoryOne);
+                params.put("categorytwo", categoryTwo);
+                params.put("price", priceString);
+                params.put("glutenfree", glutenFreeId);
+                params.put("vegetarian", vegetarianId);
+                params.put("vegan", veganId);
+                params.put("lactosefree", lactoseId);
 
                 mCardStack.setVisibility(View.VISIBLE);
                 mCardAdapter.add("test1");
@@ -287,7 +194,7 @@ public class SearchMenueFragment extends android.support.v4.app.Fragment {
 
                 mCardStack.setAdapter(mCardAdapter);
                 System.out.println("sending request");
-                requestQueue.add(request);
+                requestQueue.add(jsonObjRequest);
 
 
 
