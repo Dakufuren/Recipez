@@ -42,7 +42,7 @@ public class SearchMenueFragment extends android.support.v4.app.Fragment {
     private CheckBox vegan;
     private CheckBox glutenFree;
     private CheckBox laktos;
-    private CheckBox meat;
+    //private CheckBox meat;
     private Button shuffle;
     private Spinner dropDown1;
     private Spinner dropDown2;
@@ -51,6 +51,7 @@ public class SearchMenueFragment extends android.support.v4.app.Fragment {
     private String contentOne[] = {"", "Beef", "Pork", "Chicken", "Minced meat", "Oumph"};
     private String contentTwo[] = {"", "Pasta", "Rice", "Noodles", "Bulgur", "Potatis", "Couscous", "Lentils"};
     private int price = 0;
+
 
 
     private RequestQueue requestQueue;
@@ -89,7 +90,7 @@ public class SearchMenueFragment extends android.support.v4.app.Fragment {
         vegan = (CheckBox) view.findViewById(R.id.veganBox);
         glutenFree = (CheckBox) view.findViewById(R.id.glutenBox);
         laktos = (CheckBox) view.findViewById(R.id.lactoseBox);
-        meat = (CheckBox) view.findViewById(R.id.meatBox);
+       // meat = (CheckBox) view.findViewById(R.id.meatBox);
         dropDown1 = (Spinner) view.findViewById(R.id.dropDownOne);
         dropDown2 = (Spinner) view.findViewById(R.id.dropDownTwo);
         shuffle = (Button) view.findViewById(R.id.ShuffleButton);
@@ -133,7 +134,7 @@ public class SearchMenueFragment extends android.support.v4.app.Fragment {
         shuffle.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-
+                /*
                 request = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -201,21 +202,25 @@ public class SearchMenueFragment extends android.support.v4.app.Fragment {
                         return hashMap;
                     }
 
-                };
+                };*/
 
-
+                RecipeObject obj1 = new RecipeObject("Oumphs Special Blend", "vegan","vegetarian", "lorem dolar set amet", 25, "Oumph", "Onion", "Rice", "Avocado", "Beans");
+                RecipeObject obj2 = new RecipeObject("Korvgryta", "Meat based", "lorim ipsum dolar set", 30, "Saucages", "Onion", "Rice", "Mushrooms");
 
 
                 mCardStack.setVisibility(View.VISIBLE);
-                mCardAdapter.add("test1");
-                mCardAdapter.add("test2");
-                mCardAdapter.add("test3");
-                mCardAdapter.add("test4");
-                mCardAdapter.add("test5");
+
+                mCardAdapter.add("\n\n" + obj1.getRecipeName()  + "\n\n" + "Description: \n" + obj1.getDescription() + "\n\n Ingredients: \n" + obj1.getIngredient1() + "\n" +
+                obj1.getIngredient2() + "\n" + obj1.getIngredient3() + "\n\nCategories \n" + obj1.getRecipeCategory() + "\n" + obj1.getRecipeCategory2()  + "\n\n Price \n" + obj1.getPrice()
+                );
+                mCardAdapter.add("\n\n" + obj2.getRecipeName()  + "\n\n" + "Description: \n" + obj2.getDescription() + "\n\n Ingredients: \n" + obj2.getIngredient1() + "\n" +
+                        obj2.getIngredient2() + "\n" + obj2.getIngredient3() + "\n\nCategories \n" + obj2.getRecipeCategory()  + "\n\n Price \n" + obj2.getPrice()
+                );
+
 
                 mCardStack.setAdapter(mCardAdapter);
                 System.out.println("sending request");
-                requestQueue.add(request);
+                //requestQueue.add(request);
 
 
 
